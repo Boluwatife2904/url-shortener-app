@@ -17,21 +17,25 @@
 
       <div class="shorten-results">
         <div class="single-result">
-          <p>https://www.frontendmentor.io</p>
+          <div class="original-link"><p>https://www.frontendmentor.io</p></div>
           <div class="copy-link">
             <a href="https://re.ink/k4lKyk">https://re.ink/k4lKyk</a>
             <button>Copy</button>
           </div>
         </div>
         <div class="single-result">
-          <p>https://www.twitter.com/frontendmentor</p>
+          <div class="original-link">
+            <p>https://www.twitter.com/frontendmentor</p>
+          </div>
           <div class="copy-link">
             <a href="https://re.ink/k4lKyk">https://re.ink/k4lKyk</a>
             <button>Copy</button>
           </div>
         </div>
         <div class="single-result">
-          <p>https://www.linkedin.com/company/frontend-mentor</p>
+          <div class="original-link">
+            <p>https://www.linkedin.com/company/frontend-mentor</p>
+          </div>
           <div class="copy-link">
             <a href="https://re.ink/k4lKyk">https://re.ink/k4lKyk</a>
             <button>Copy</button>
@@ -143,38 +147,40 @@ form button:focus {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   border-radius: 6px;
   padding: 20px;
   margin-bottom: 15px;
   overflow: hidden;
-	/* width: 100%; */
+  width: 100%;
+  position: relative;
 }
 
 .single-result:last-child {
   margin-bottom: 0;
 }
 
-.single-result p {
+.single-result .original-link p {
   margin: 0;
-	/* overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; */
+  /* overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 95%; */
 }
 
-/* .single-result p,
-.single-result .copy-link{
-	flex: 1 0 50%;
+/* .single-result .original-link,
+.single-result .copy-link {
+  width: 100%;
 } */
 
-.copy-link a {
+.single-result .copy-link a {
   color: hsl(180, 66%, 49%);
   text-decoration: none;
   display: inline-block;
   margin-right: 15px;
 }
 
-.copy-link button {
+.single-result .copy-link button {
   background: hsl(180, 66%, 49%);
   color: #fff;
   border-radius: 6px;
@@ -227,26 +233,46 @@ form button:focus {
     align-items: flex-start;
   }
 
-  .single-result p {
+  .single-result::after {
+    content: "";
+    position: absolute;
+    height: 1px;
+    background: hsl(0, 0%, 75%);
+    width: 100%;
+    top: 50px;
+    left: 0;
+  }
+
+  .single-result .original-link p {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     margin-bottom: 15px;
-		width: 95%;
+    width: 95%;
   }
 
-	.copy-link{
-		/* flex: 1 0 100%; */
-	}
+  /* .copy-link{
+		flex: 1 0 100%;
+	} */
 
-  .copy-link a {
+  /* .single-result .original-link,
+  .single-result .copy-link {
+    flex: 1 0 95%;
+  } */
+
+  .single-result .original-link,
+  .single-result .copy-link {
+    width: 100%;
+  }
+
+  .single-result .copy-link a {
     margin-bottom: 15px;
   }
 
-  .copy-link button {
+  .single-result .copy-link button {
     display: block;
     width: 100%;
-		text-align: center;
+    text-align: center;
   }
 }
 </style>

@@ -110,6 +110,7 @@ export default {
 @media screen and (max-width: 902px) {
   .statistics-card {
     flex: 1 0 100%;
+    text-align: center;
   }
 
   .statistics-card .image-container {
