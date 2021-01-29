@@ -147,6 +147,8 @@ form button:focus {
   border-radius: 6px;
   padding: 20px;
   margin-bottom: 15px;
+  overflow: hidden;
+	/* width: 100%; */
 }
 
 .single-result:last-child {
@@ -155,7 +157,15 @@ form button:focus {
 
 .single-result p {
   margin: 0;
+	/* overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; */
 }
+
+/* .single-result p,
+.single-result .copy-link{
+	flex: 1 0 50%;
+} */
 
 .copy-link a {
   color: hsl(180, 66%, 49%);
@@ -210,6 +220,33 @@ form button:focus {
 
   .spacer {
     margin: 20px 0;
+  }
+
+  .single-result {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .single-result p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 15px;
+		width: 95%;
+  }
+
+	.copy-link{
+		/* flex: 1 0 100%; */
+	}
+
+  .copy-link a {
+    margin-bottom: 15px;
+  }
+
+  .copy-link button {
+    display: block;
+    width: 100%;
+		text-align: center;
   }
 }
 </style>
