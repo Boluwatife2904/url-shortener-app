@@ -1,8 +1,7 @@
 <template>
   <the-header></the-header>
-  <section class="main-form">
-    <statistics-section></statistics-section>
-  </section>
+  <the-form></the-form>
+  <statistics-section></statistics-section>
   <call-to-action></call-to-action>
   <the-footer></the-footer>
 </template>
@@ -12,6 +11,7 @@ import StatisticsSection from "./components/StatisticsSection.vue";
 import CallToAction from "./components/CallToAction.vue";
 import TheHeader from "./components/TheHeader.vue";
 import TheFooter from "./components/TheFooter.vue";
+import TheForm from "./components/TheForm.vue";
 
 export default {
   name: "App",
@@ -20,6 +20,7 @@ export default {
     StatisticsSection,
     TheFooter,
     TheHeader,
+    TheForm,
   },
 };
 </script>

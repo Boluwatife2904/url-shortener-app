@@ -26,16 +26,22 @@ section {
   background-color: hsl(257, 27%, 26%);
 }
 
-section .content-container{
-    margin: 0 auto;
-    width: 90%;
-    max-width: 600px;
-    text-align: center;
+section .content-container {
+  margin: 0 auto;
+  width: 90%;
+  max-width: 600px;
+  text-align: center;
 }
 
-section .content-container h3{
-    color: #fff;
-    font-size: 30px;
-    margin-bottom: 20px
+section .content-container h3 {
+  color: #fff;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 416px) {
+  section .content-container h3 {
+    font-size: 22px;
+  }
 }
 </style>

@@ -55,7 +55,7 @@ export default {
 <style scoped>
 .statistics-section {
   background: hsl(230, 25%, 95%);
-  padding: 120px 60px;
+  padding: 60px 60px 100px;
   overflow: hidden;
 }
 
@@ -83,9 +83,15 @@ export default {
   flex-wrap: wrap;
 }
 
-@media screen and (max-width: 460px){
-.statistics-section {
-    padding: 120px 20px;
+@media screen and (max-width: 902px) {
+  .statistics-section .statistics-cards {
+    flex-direction: column;
+  }
 }
+
+@media screen and (max-width: 576px) {
+  .statistics-section {
+    padding: 60px 20px;
+  }
 }
 </style>

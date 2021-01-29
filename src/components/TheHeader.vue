@@ -34,6 +34,7 @@ export default {
   align-items: center;
   overflow: hidden;
   flex-wrap: wrap;
+  margin-bottom: 50px;
 }
 
 .header-section .text-content,

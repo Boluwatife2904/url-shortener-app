@@ -1,11 +1,13 @@
 <template>
-  <button>
+  <button :type="type">
     <slot></slot>
   </button>
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["type"]
+};
 </script>
 
 <style scoped>

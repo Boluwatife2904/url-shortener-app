@@ -83,9 +83,31 @@ export default {
   .statistics-section .statistics-card:nth-child(3) {
     margin-top: 0;
   }
+
+  .statistics-card {
+    margin-bottom: 70px;
+  }
+
+  .statistics-card:first-child::after {
+    content: "";
+    position: absolute;
+    height: 200px;
+    width: 7px;
+    background: hsl(180, 66%, 49%);
+    z-index: -1;
+    left: 70px;
+    top: 262px;
+  }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1000px) {
+  .statistics-card:first-child::before {
+    width: 400px;
+    right: -400px;
+  }
+}
+
+@media screen and (max-width: 902px) {
   .statistics-card {
     flex: 1 0 100%;
   }
@@ -107,16 +129,21 @@ export default {
     top: 262px;
     z-index: -1;
   }
+
+  .statistics-card:first-child::after {
+    display: none;
+  }
 }
 
-@media screen and (max-width: 379px) {
+@media screen and (max-width: 416px) {
   .statistics-card:first-child::before {
-    /* height: 500px;
-    width: 7px;
-    left: 50%;
-    transform: translateX(-50%); */
     top: 292px;
-    /* z-index: -1; */
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .statistics-card:first-child::before {
+    top: 322px;
   }
 }
 </style>
