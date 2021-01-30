@@ -96,6 +96,10 @@ export default {
         (item) => item.shortenedLink === link
       );
       selectLink.copied = true;
+      localStorage.setItem(
+              "shortenedLinks",
+              JSON.stringify(this.shortenedLinks)
+            );
     },
     hideError() {
       this.errorBox = false;
