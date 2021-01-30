@@ -5,7 +5,7 @@
     </div>
     <div class="copy-link">
       <a :href="shortenedLink">{{ shortenedLink }}</a>
-      <button :class="{ copied: copied }" @click="copyLink">
+      <button :class="{ copied: copied }" @click="copyLink" v-clipboard="shortenedLink">
         {{ copied ? "Copied!" : "Copy" }}
       </button>
     </div>

@@ -61,6 +61,7 @@ export default {
   methods: {
     resetInputOnFocus() {
       this.inputIsInvalid = false;
+      this.errorBox = false;
     },
     shortenUrl() {
       if (this.link.trim() === "") {
