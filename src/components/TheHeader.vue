@@ -61,7 +61,7 @@ export default {
   display: block;
   margin: 0 auto;
   width: 100%;
-  height: 400px;
+  height: 450px;
   position: relative;
   left: 100px;
   margin-bottom: 20px;

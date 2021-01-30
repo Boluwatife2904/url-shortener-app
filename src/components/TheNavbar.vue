@@ -52,7 +52,7 @@ nav {
   background-color: #fff;
   display: flex;
   align-items: center;
-  padding: 15px 80px;
+  padding: 30px 80px 15px;
 }
 
 nav .logo {
@@ -75,13 +75,19 @@ nav ul {
 }
 
 nav ul li {
-  margin: 0 10px;
+  margin: 0 20px;
 }
 
 nav ul li a {
   display: inline-block;
   color: hsl(0, 0%, 75%);
   text-decoration: none;
+	font-weight: 500;
+	transition: all .5s ease-in-out;
+}
+
+nav ul li a:hover{
+	color: hsl(255, 11%, 22%);
 }
 
 nav .signup-btn {
@@ -91,6 +97,11 @@ nav .signup-btn {
 	padding: 8px 0;
 	width: 140px;
 	text-align: center;
+}
+
+nav .signup-btn:hover{
+	color: #fff;
+  background-color: hsl(180, 85%, 60%);
 }
 
 nav .burger {
