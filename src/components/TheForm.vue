@@ -8,63 +8,127 @@
             v-model="link"
             :class="{ invalid: inputIsInvalid }"
             placeholder="Shorten a link here..."
+            @focus="resetInputOnFocus"
           />
           <div class="spacer" v-if="inputIsInvalid"></div>
-          <button type="submit">Shorten It!</button>
+          <button type="submit">
+            <span class="loader" v-if="loading"></span>
+            <span v-else>Shorten It!</span>
+          </button>
         </div>
         <p v-if="inputIsInvalid" class="error-message">Please add a link!!!</p>
       </form>
 
       <div class="shorten-results">
-        <div class="single-result">
-          <div class="original-link"><p>https://www.frontendmentor.io</p></div>
-          <div class="copy-link">
-            <a href="https://re.ink/k4lKyk">https://re.ink/k4lKyk</a>
-            <button>Copy</button>
-          </div>
+        <div v-if="errorBox" class="error-box">
+          <span>&#x1F615; </span>
+          <p>We have encountered an error while trying to shorten your link</p>
+          <button @click="hideError">Try Again</button>
         </div>
-        <div class="single-result">
-          <div class="original-link">
-            <p>https://www.twitter.com/frontendmentor</p>
-          </div>
-          <div class="copy-link">
-            <a href="https://re.ink/k4lKyk">https://re.ink/k4lKyk</a>
-            <button>Copy</button>
-          </div>
-        </div>
-        <div class="single-result">
-          <div class="original-link">
-            <p>https://www.linkedin.com/company/frontend-mentor</p>
-          </div>
-          <div class="copy-link">
-            <a href="https://re.ink/k4lKyk">https://re.ink/k4lKyk</a>
-            <button>Copy</button>
-          </div>
-        </div>
+        <shortener-result
+          v-for="result in shortenedLinks"
+          :key="result.shortenedLink"
+          :oldLink="result.oldLink"
+          :shortenedLink="result.shortenedLink"
+          :copied="result.copied"
+          @copy="copyShortenedLink"
+        ></shortener-result>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+import ShortenerResult from "./ShortenerResult.vue";
+
 export default {
+  components: {
+    ShortenerResult,
+  },
+  created() {
+    this.shortenedLinks =
+      JSON.parse(localStorage.getItem("shortenedLinks")) || this.shortenedLinks;
+  },
   data() {
     return {
       link: "",
+      errorBox: false,
       inputIsInvalid: false,
+      loading: false,
+      shortenedLinks: [],
     };
   },
   methods: {
+    resetInputOnFocus() {
+      this.inputIsInvalid = false;
+    },
     shortenUrl() {
       if (this.link.trim() === "") {
         this.inputIsInvalid = true;
+      } else {
+        this.loading = true;
+        fetch(`https://api.shrtco.de/v2/shorten?url=${this.link.trim()}`)
+          .then((res) => res.json())
+          .then((data) => {
+            const newResult = {
+              oldLink: data.result.original_link,
+              shortenedLink: data.result.full_short_link,
+              copied: false,
+            };
+            this.shortenedLinks.unshift(newResult);
+            localStorage.setItem(
+              "shortenedLinks",
+              JSON.stringify(this.shortenedLinks)
+            );
+            this.link = "";
+            this.loading = false;
+            // console.log(data);
+          })
+          .catch((error) => {
+            console.log(error);
+            this.errorBox = true;
+            this.loading = false;
+          });
       }
+    },
+    copyShortenedLink(link) {
+      const selectLink = this.shortenedLinks.find(
+        (item) => item.shortenedLink === link
+      );
+      selectLink.copied = true;
+    },
+    hideError() {
+      this.errorBox = false;
+      this.link = "";
     },
   },
 };
 </script>
 
 <style scoped>
+.loader {
+  display: block;
+  position: relative;
+  top: 1px;
+  left: 40%;
+  transform: translateX(-40%);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  border: 5px solid #ffffff;
+  border-bottom: 5px solid  hsl(180, 66%, 49%);
+  animation: preloader 1s linear infinite;
+}
+
+@keyframes preloader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* END PRELOADER */
 section {
   background: hsl(230, 25%, 95%);
 }
@@ -116,8 +180,9 @@ form input.invalid {
   font-style: italic;
 }
 
+.error-box button,
 form button {
-  background: hsl(180, 66%, 49%);
+  background:  hsl(180, 66%, 49%);
   color: #fff;
   border-radius: 6px;
   border: 0;
@@ -137,69 +202,41 @@ form button:focus {
   background: hsl(180, 85%, 60%);
 }
 
+form button:hover .loader,
+form button:focus .loader {
+  border-bottom: 5px solid hsl(180, 85%, 60%);
+}
+
 .shorten-results {
   position: relative;
   top: -45px;
 }
 
-.single-result {
+.error-box {
   background: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  /* flex-wrap: wrap; */
+  padding: 20px 40px;
+  margin-bottom: 30px;
   border-radius: 6px;
-  padding: 20px;
-  margin-bottom: 15px;
-  overflow: hidden;
-  width: 100%;
-  position: relative;
-}
-
-.single-result:last-child {
+  text-align: center;
   margin-bottom: 0;
 }
 
-.single-result .original-link p {
-  margin: 0;
-  /* overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 95%; */
+.error-box span {
+  display: block;
+  font-size: 32px;
+  margin-bottom: 4px;
 }
 
-/* .single-result .original-link,
-.single-result .copy-link {
-  width: 100%;
-} */
-
-.single-result .copy-link a {
-  color: hsl(180, 66%, 49%);
-  text-decoration: none;
-  display: inline-block;
-  margin-right: 15px;
+.error-box p {
+  color: hsl(0, 0%, 75%);
+  line-height: 30px;
 }
 
-.single-result .copy-link button {
-  background: hsl(180, 66%, 49%);
-  color: #fff;
-  border-radius: 6px;
-  border: 0;
-  display: inline-block;
-  outline: none;
-  padding: 8px 0;
-  text-align: center;
-  width: 100px;
-  font: inherit;
+.error-box button {
+  height: 40px;
+  width: 120px;
+  margin: 10px 0;
   font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.5s ease-in-out;
-}
-
-.copy-link button:hover,
-.copy-link button:focus {
-  background: hsl(180, 85%, 60%);
 }
 
 @media screen and (max-width: 768px) {
@@ -226,53 +263,6 @@ form button:focus {
 
   .spacer {
     margin: 20px 0;
-  }
-
-  .single-result {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .single-result::after {
-    content: "";
-    position: absolute;
-    height: 1px;
-    background: hsl(0, 0%, 75%);
-    width: 100%;
-    top: 50px;
-    left: 0;
-  }
-
-  .single-result .original-link p {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    margin-bottom: 15px;
-    width: 95%;
-  }
-
-  /* .copy-link{
-		flex: 1 0 100%;
-	} */
-
-  /* .single-result .original-link,
-  .single-result .copy-link {
-    flex: 1 0 95%;
-  } */
-
-  .single-result .original-link,
-  .single-result .copy-link {
-    width: 100%;
-  }
-
-  .single-result .copy-link a {
-    margin-bottom: 15px;
-  }
-
-  .single-result .copy-link button {
-    display: block;
-    width: 100%;
-    text-align: center;
   }
 }
 </style>
