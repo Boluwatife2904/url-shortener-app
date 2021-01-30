@@ -244,6 +244,10 @@ form button:focus .loader {
 }
 
 @media screen and (max-width: 768px) {
+  .loader{
+    left: 45%;
+    transform: translateX(-45%);
+  }
   form {
     padding: 20px;
   }
