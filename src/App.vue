@@ -1,4 +1,5 @@
 <template>
+  <the-navbar></the-navbar>
   <the-header></the-header>
   <the-form></the-form>
   <statistics-section></statistics-section>
@@ -11,6 +12,7 @@ import StatisticsSection from "./components/StatisticsSection.vue";
 import CallToAction from "./components/CallToAction.vue";
 import TheHeader from "./components/TheHeader.vue";
 import TheFooter from "./components/TheFooter.vue";
+import TheNavbar from "./components/TheNavbar.vue";
 import TheForm from "./components/TheForm.vue";
 
 export default {
@@ -19,6 +21,7 @@ export default {
     CallToAction,
     StatisticsSection,
     TheFooter,
+    TheNavbar,
     TheHeader,
     TheForm,
   },

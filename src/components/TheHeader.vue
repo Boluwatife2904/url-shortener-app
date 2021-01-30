@@ -28,7 +28,7 @@ export default {
 
 <style scoped>
 .header-section {
-  padding: 80px;
+  padding: 40px 80px 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -78,7 +78,7 @@ export default {
 
 @media screen and (max-width: 920px) {
   .header-section {
-    padding: 80px 40px;
+    padding: 30px 40px 80px;
   }
 }
 
