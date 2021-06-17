@@ -12,7 +12,7 @@
           />
           <div class="spacer" v-if="inputIsInvalid"></div>
           <button type="submit">
-            <span class="loader" v-if="loading"></span>
+            <span class="loader" v-if="isLoading"></span>
             <span v-else>Shorten It!</span>
           </button>
         </div>
@@ -39,73 +39,89 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import ShortenerResult from "./ShortenerResult.vue";
 
 export default {
   components: {
     ShortenerResult,
   },
-  created() {
-    this.shortenedLinks =
-      JSON.parse(localStorage.getItem("shortenedLinks")) || this.shortenedLinks;
-  },
-  data() {
-    return {
-      link: "",
-      errorBox: false,
-      inputIsInvalid: false,
-      loading: false,
-      shortenedLinks: [],
-    };
-  },
-  methods: {
-    resetInputOnFocus() {
-      this.inputIsInvalid = false;
-      this.errorBox = false;
-    },
-    shortenUrl() {
-      if (this.link.trim() === "") {
-        this.inputIsInvalid = true;
+  setup() {
+    // Data
+    const link = ref("");
+    const errorBox = ref(false);
+    const inputIsInvalid = ref(false);
+    const isLoading = ref(false);
+    const shortenedLinks = ref([]);
+
+    // Retrieving links from local storage
+    shortenedLinks.value =
+      JSON.parse(localStorage.getItem("shortenedLinks")) ||
+      shortenedLinks.value;
+
+    // Methods
+    const shortenUrl = async () => {
+      if (link.value.trim() === "") {
+        inputIsInvalid.value = true;
       } else {
-        this.loading = true;
-        fetch(`https://api.shrtco.de/v2/shorten?url=${this.link.trim()}`)
-          .then((res) => res.json())
-          .then((data) => {
-            const newResult = {
-              oldLink: data.result.original_link,
-              shortenedLink: data.result.full_short_link,
-              copied: false,
-            };
-            this.shortenedLinks.unshift(newResult);
-            localStorage.setItem(
-              "shortenedLinks",
-              JSON.stringify(this.shortenedLinks)
-            );
-            this.link = "";
-            this.loading = false;
-            // console.log(data);
-          })
-          .catch((error) => {
-            console.log(error);
-            this.errorBox = true;
-            this.loading = false;
-          });
+        isLoading.value = true;
+        try {
+          const response = await fetch(
+            `https://api.shrtco.de/v2/shorten?url=${link.value.trim()}`
+          );
+          const responseData = await response.json();
+          const newResult = {
+            oldLink: responseData.result.original_link,
+            shortenedLink: responseData.result.full_short_link,
+            copied: false,
+          };
+          shortenedLinks.value.unshift(newResult);
+          updateLocalStorage();
+          link.value = "";
+          isLoading.value = false;
+        } catch {
+          errorBox.value = true;
+          isLoading.value = false;
+        }
       }
-    },
-    copyShortenedLink(link) {
-      const selectLink = this.shortenedLinks.find(
+    };
+
+    const resetInputOnFocus = () => {
+      inputIsInvalid.value = false;
+      errorBox.value = false;
+    };
+
+    const hideError = () => {
+      errorBox.value = false;
+      link.value = "";
+    };
+
+    const copyShortenedLink = (link) => {
+      const selectLink = shortenedLinks.value.find(
         (item) => item.shortenedLink === link
       );
       selectLink.copied = true;
+      updateLocalStorage();
+    };
+
+    const updateLocalStorage = () => {
       localStorage.setItem(
-              "shortenedLinks",
-              JSON.stringify(this.shortenedLinks)
-            );
-    },
-    hideError() {
-      this.errorBox = false;
-      this.link = "";
-    },
+        "shortenedLinks",
+        JSON.stringify(shortenedLinks.value)
+      );
+    };
+
+    return {
+      link,
+      errorBox,
+      inputIsInvalid,
+      isLoading,
+      shortenedLinks,
+      resetInputOnFocus,
+      hideError,
+      copyShortenedLink,
+      shortenUrl,
+    };
   },
 };
 </script>
@@ -121,7 +137,7 @@ export default {
   width: 30px;
   border-radius: 50%;
   border: 5px solid #ffffff;
-  border-bottom: 5px solid  hsl(180, 66%, 49%);
+  border-bottom: 5px solid hsl(180, 66%, 49%);
   animation: preloader 1s linear infinite;
 }
 
@@ -187,7 +203,7 @@ form input.invalid {
 
 .error-box button,
 form button {
-  background:  hsl(180, 66%, 49%);
+  background: hsl(180, 66%, 49%);
   color: #fff;
   border-radius: 6px;
   border: 0;
@@ -245,7 +261,7 @@ form button:focus .loader {
 }
 
 @media screen and (max-width: 768px) {
-  .loader{
+  .loader {
     left: 45%;
     transform: translateX(-45%);
   }

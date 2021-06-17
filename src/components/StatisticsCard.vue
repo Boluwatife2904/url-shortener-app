@@ -30,10 +30,10 @@ export default {
   content: "";
   position: absolute;
   height: 7px;
-  width: 500px;
+  width: 700px;
   background: hsl(180, 66%, 49%);
   z-index: -1;
-  right: -500px;
+  right: -700px;
   top: 50%;
 }
 
@@ -100,7 +100,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
   .statistics-card:first-child::before {
     width: 400px;
     right: -400px;

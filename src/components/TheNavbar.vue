@@ -33,16 +33,15 @@
 </template>
 
 <script>
+import { ref } from "vue";
 export default {
-  data() {
-    return {
-      navIsOpen: false,
-    };
-  },
-  methods: {
-    toggleNav() {
-      this.navIsOpen = !this.navIsOpen;
-    },
+  name: "TheNavbar",
+  setup() {
+    const navIsOpen = ref(false);
+    const toggleNav = () => {
+      navIsOpen.value = !navIsOpen.value
+    }
+    return { navIsOpen, toggleNav }
   },
 };
 </script>

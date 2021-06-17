@@ -15,11 +15,14 @@
 <script>
 export default {
   props: ["oldLink", "shortenedLink", "copied"],
-  methods: {
-    copyLink() {
-      this.$emit("copy", this.shortenedLink);
-    },
-  },
+  setup(props, context) {
+    const copyLink = () => {
+      context.emit("copy", props.shortenedLink)
+    }
+    return {
+      copyLink 
+    }
+  }
 };
 </script>
 
